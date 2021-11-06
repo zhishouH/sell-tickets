@@ -1,22 +1,75 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 
+// 一级路由
+const Film = () => import('@/views/Film')
+const Cinema = () => import('@/views/Cinema')
+const News = () => import('@/views/News')
+const Center = () => import('@/views/Center')
+const City = () => import('@/views/City')
+const Detail = () => import('@/views/Detail')
+const Login = () => import('@/views/Login')
+const FilmSearch = () => import('@/views/FilmSearch')
+const CinemaSearch = () => import('@/views/CinemaSearch')
+// 二级路由
+const Nowplaying = () => import('@/views/film/Nowplaying')
+const Comingsoon = () => import('@/views/film/Comingsoon')
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'Home',
-    component: Home
+    path: '/film',
+    component: Film,
+    children: [
+      {
+        path: 'nowplaying',
+        component: Nowplaying
+      },
+      {
+        path: 'comingsoon',
+        component: Comingsoon
+      },
+      {
+        path: '',
+        redirect: 'nowplaying'
+      }
+    ]
   },
   {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
+    path: '/cinema',
+    component: Cinema
+  },
+  {
+    path: '/news',
+    component: News
+  },
+  {
+    path: '/center',
+    component: Center
+  },
+  {
+    path: '/city',
+    component: City
+  },
+  {
+    path: '/detail/:id',
+    component: Detail
+  },
+  {
+    path: '/login',
+    component: Login
+  },
+  {
+    path: '/filmsearch',
+    component: FilmSearch
+  },
+  {
+    path: '/cinemasearch',
+    component: CinemaSearch
+  },
+  {
+    path: '*',
+    redirect: '/film'
   }
 ]
 
