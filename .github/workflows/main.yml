@@ -1,0 +1,33 @@
+name: 亲自部署工作流程
+
+on: 
+  push:
+    branches: 
+    - main
+
+jobs: 
+  web-deploy: 
+    name: 部署任务
+    runs-on: ubuntu-latest
+    steps:
+    - name: 检出代码
+      uses: actions/checkout@v2
+
+    - uses: actions/setup-node@v2
+      with:
+        node-version: '14'
+
+    - run: npm install
+
+    - run: npm run build
+    - name: 同步文件
+      uses: SamKirkland/FTP-Deploy-Action@2.0.0
+      env:
+        FTP_SERVER: ${{ secrets.REMOTE_HOST }}
+        PORT: ${{ secrets.REMOTE_PORT }}
+        FTP_USERNAME: ${{ secrets.REMOTE_USERNAME }}
+        FTP_PASSWORD: ${{ secrets.REMOTE_PASSWORD }}
+        REMOTE_DIR: /usr/local/sell-tickets
+        LOCAL_DIR : ./dist
+        METHOD: sftp
+        ARGS: --transfer-all --exclude-glob=.git*/** --exclude-glob=.git**
